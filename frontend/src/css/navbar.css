@@ -1,0 +1,22 @@
+
+
+.main-navbar
+{
+    margin-top: 1em;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border-bottom: 1px solid;
+    border-color: rgba(0,0,0,0.2);
+}
+
+
+.end-navbar
+{
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2em;
+}
