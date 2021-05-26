@@ -1,8 +1,15 @@
 
+export {};
 
-const express = require("express");
 
-const app = express();
+import express from "express";
+
+const app: express.Application = express();
+
+const bodyParser = require("body-parser");
+
+app.use(bodyParser);
+
 
 
 
