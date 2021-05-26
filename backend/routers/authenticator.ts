@@ -1,7 +1,6 @@
 import { Router, Response, Request } from "express";
 import { IUser } from "../types/user";
 export {};
-import { secret } from "../config.json";
 
 const jwt = require("jsonwebtoken");
 
