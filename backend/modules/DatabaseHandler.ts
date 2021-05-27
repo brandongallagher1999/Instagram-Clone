@@ -4,14 +4,10 @@ import {databaseConnection} from "../config.json";
 /*
 
 */
-class DatabaseHandler
+async function createDb()
 {
-    connection: mongoose.Connection; //Connection to my database
-    constructor()
-    {
-        this.connection = mongoose.createConnection(databaseConnection, {useNewUrlParser: true});
-    }
-
+    await mongoose.connect(databaseConnection, {useNewUrlParser: true, useUnifiedTopology: true});
 }
 
-export default DatabaseHandler;
+
+export default createDb;

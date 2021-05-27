@@ -5,50 +5,67 @@ import mongoose, { Collection, Error, model, Model } from "mongoose";
 import { IUser, IUserJson } from "../types/user";
 import UserSchema from "../models/User";
 //@ts-ignore
-import jhashes from "jshashes";
+const Hashes = require("jshashes");
 
-import DatabaseHandler from "./DatabaseHandler";
-
-
-class UserHandler extends DatabaseHandler
+class UserHandler
 {
 
     UserModel: Model<IUser>;
+    SHA1: any;
     constructor()
     {
-        super();
-        this.UserModel = model("User", UserSchema); // Connection is somehow handled by mongoose?
+        this.SHA1 = new Hashes.SHA1; //instantiating the hashing objecting
+        this.UserModel = model("users", UserSchema);
 
     }
 
-    register(user: IUserJson): number
+    async register(user: IUserJson): Promise<number>
     {
-        let statusCode = 401;
-        user.password = jhashes.SHA1(user.password); //hash the password
-        this.UserModel.findOne({"username" : user.username}, (err: Error, userObj: IUser) => {
-            if (!userObj) //if the user doesn't exist.
+        let statusCode = 406;
+        user.password = this.SHA1.hex(user.password); //hash the password
+        await this.UserModel.findOne({"username" : user.username}, (err: Error, userObj: IUser) => {
+            if (err)
             {
-                statusCode = 200;
-                const newUser = new this.UserModel(user);
-                newUser.save();
+                console.log(err);
             }
             else
             {
-                statusCode = 401;
+                if (userObj)
+                {
+                    statusCode = 406;
+                }
+                else
+                {
+                    console.log("User doesn't exist!");
+                    statusCode = 200;
+                    new this.UserModel(user).save();
+                }
             }
+
         });
         return statusCode;
         
     }
 
-    login(user: IUserJson): number
+    async login(user: IUserJson): Promise<number>
     {
         let statusCode = 200;
-        const hashedPassword: string = jhashes.SHA1(user.password); //hashing the password
-        this.UserModel.findOne({"username" : user.username, "password" : hashedPassword}, (err: Error, userObj: IUser) => {
+        const hashedPassword: string = this.SHA1.hex(user.password); //hashing the password
+        await this.UserModel.findOne({"username" : user.username, "password" : hashedPassword}, (err: Error, userObj: IUser) => {
             if (err)
             {
                 statusCode = 404;
+            }
+            else
+            {
+                if (userObj) 
+                {
+                    statusCode = 200;
+                }
+                else
+                {
+                    statusCode = 404;
+                }
             }
         });
         return statusCode;

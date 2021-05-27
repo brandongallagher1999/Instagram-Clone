@@ -1,12 +1,8 @@
 import { Router, Response, Request } from "express";
-import { IUser, IUserJson } from "../types/user";
+import { IUserJson } from "../types/user";
 import UserHandler from "../modules/UserHandler";
 import { jwt_secret } from "../config.json";
 import cookie from "cookie";
-
-
-export {};
-
 import jwt from "jsonwebtoken";
 
 const express: any = require("express");
@@ -16,30 +12,45 @@ const router: Router = express.Router();
 const userHandler: UserHandler = new UserHandler();
 
 //POST: /api/login/
-router.post("/login/", (req: Request, res: Response, next: any): any => {
+router.post("/login/", async (req: Request, res: Response, next: any)=> {
 
     const user: IUserJson = req.body;
-    if (userHandler.login(user) == 200)
-    {
-        const json_token = jwt.sign({ data: {"username" : user.username}}, jwt_secret, { expiresIn: "2h"});
-        res.setHeader("Set-Cookie", cookie.serialize("jwt", json_token, {httpOnly: true}));
-        res.status(200).send("Success");
-    }
-    else
-    {
-        res.status(404).send("Login failed. User not found.");
-    }
+    await userHandler.login(user).then((statusCode) => {
+        if (statusCode == 200)
+        {
+            const json_token = jwt.sign({ data: {"username" : user.username}}, jwt_secret, { expiresIn: "2h"});
+            res.setHeader("Set-Cookie", cookie.serialize("jwt", json_token, {httpOnly: true}));
+            res.status(200).send("Success, logged in");
+        }
+        else
+        {
+            res.status(statusCode).send("Login failed. Either the user doesn't exist, or the password is incorrect.");
+        }
+    });
+
     next();
 });
 
-router.post("/register", (req: Request, res: Response, next: any): any => {
+// POST: /api/register/
+router.post("/register", async (req: Request, res: Response, next: any) => {
     const user: IUserJson = req.body;
 
-    userHandler.register(user)
+    await userHandler.register(user).then((statusCode) => {
+        if (statusCode == 200)
+        {
+            res.status(statusCode).send("Registered!");
+        }
+        else
+        {
+            res.status(statusCode).send("User already exists!");
+        }
+        
+    });
+    
     next();
 
 });
 
-
+export default router;
 
 

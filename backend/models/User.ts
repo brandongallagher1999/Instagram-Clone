@@ -1,10 +1,9 @@
 
-import mongoose from "mongoose";
-import { IUser } from "../types/user";
+import mongoose, { Collection } from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
+const UserSchema= new Schema({
     username : {
         type: String,
         required: true
@@ -13,6 +12,6 @@ const UserSchema = new Schema({
         type: String,
         required: true
     }
-});
+}, {collection : "Users"});
 
 export default UserSchema;
