@@ -1,5 +1,5 @@
 import { Router, Response, Request } from "express";
-import { IUser } from "../types/user";
+import { IUser, IUserJson } from "../types/user";
 import UserHandler from "../modules/UserHandler";
 import { jwt_secret } from "../config.json";
 import cookie from "cookie";
@@ -18,7 +18,7 @@ const userHandler: UserHandler = new UserHandler();
 //POST: /api/login/
 router.post("/login/", (req: Request, res: Response, next: any): any => {
 
-    const user: IUser = req.body;
+    const user: IUserJson = req.body;
     if (userHandler.login(user) == 200)
     {
         const json_token = jwt.sign({ data: {"username" : user.username}}, jwt_secret, { expiresIn: "2h"});
@@ -33,7 +33,7 @@ router.post("/login/", (req: Request, res: Response, next: any): any => {
 });
 
 router.post("/register", (req: Request, res: Response, next: any): any => {
-    const user: IUser = req.body;
+    const user: IUserJson = req.body;
 
     userHandler.register(user)
     next();

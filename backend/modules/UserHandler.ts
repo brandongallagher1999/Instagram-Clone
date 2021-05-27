@@ -2,7 +2,7 @@
 
 
 import mongoose, { Collection, Error, model, Model } from "mongoose";
-import { IUser } from "../types/user";
+import { IUser, IUserJson } from "../types/user";
 import UserSchema from "../models/User";
 //@ts-ignore
 import jhashes from "jshashes";
@@ -21,7 +21,7 @@ class UserHandler extends DatabaseHandler
 
     }
 
-    register(user: IUser): number
+    register(user: IUserJson): number
     {
         let statusCode = 401;
         user.password = jhashes.SHA1(user.password); //hash the password
@@ -41,7 +41,7 @@ class UserHandler extends DatabaseHandler
         
     }
 
-    login(user: IUser): number
+    login(user: IUserJson): number
     {
         let statusCode = 200;
         const hashedPassword: string = jhashes.SHA1(user.password); //hashing the password
