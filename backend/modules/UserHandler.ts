@@ -1,12 +1,17 @@
 
 
 
-import mongoose, { Collection, Error, model, Model } from "mongoose";
+import  { Error, model, Model } from "mongoose";
 import { IUser, IUserJson } from "../types/user";
 import UserSchema from "../models/User";
+
 //@ts-ignore
 const Hashes = require("jshashes");
 
+/**
+ * Handles both the registration and login functionality for the UserRoute
+ * @module UserHandler
+ */
 class UserHandler
 {
 
@@ -18,7 +23,11 @@ class UserHandler
         this.UserModel = model("users", UserSchema);
 
     }
-
+    /**
+     * @param {IUserJson} user  The user JSON coming in from the front-end POST request.
+     * 
+     * @return {Promise<number>}    An HTTP status code
+     */
     async register(user: IUserJson): Promise<number>
     {
         let statusCode = 406;
@@ -46,7 +55,11 @@ class UserHandler
         return statusCode;
         
     }
-
+        /**
+     * @param {IUserJson} user  The user JSON coming in from the front-end POST request.
+     * 
+     * @return {Promise<number>}    An HTTP status code
+     */
     async login(user: IUserJson): Promise<number>
     {
         let statusCode = 200;
@@ -73,7 +86,5 @@ class UserHandler
     
     
 }
-
-
 
 export default UserHandler;

@@ -71,5 +71,5 @@
   "include" : [
     "**/*.ts",
     "**/package.json"
-, "types/DatabaseHandler.ts"  ]
+  ]
 }

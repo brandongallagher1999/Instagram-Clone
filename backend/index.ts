@@ -1,17 +1,18 @@
 
-export {};
-
-
-import express, { Router } from "express";
+import express from "express";
 import cors from "cors";
-const app: express.Application = express();
-import userRouter from "./routers/UserRoute";
-const bodyParser = require("body-parser");
+import userRouter from "./routes/UserRoute";
 import createDb from "./modules/DatabaseHandler";
 
+const bodyParser = require("body-parser");
+const app: express.Application = express();
 
 app.use(bodyParser());
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
+    credentials: true
+}));
 
 
 
@@ -23,3 +24,6 @@ createDb().then(() => {
         console.log("Running on port 3001!");
     });
 });
+
+
+export {};

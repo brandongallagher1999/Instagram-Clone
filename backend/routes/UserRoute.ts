@@ -11,15 +11,19 @@ const router: Router = express.Router();
 
 const userHandler: UserHandler = new UserHandler();
 
-//POST: /api/login/
+/**
+ * POST: /api/login
+ * @param {IUserJson} user  The User JSON with their username and password
+ */
 router.post("/login/", async (req: Request, res: Response, next: any)=> {
 
     const user: IUserJson = req.body;
-    await userHandler.login(user).then((statusCode) => {
+    await userHandler.login(user).then((statusCode: number) => {
         if (statusCode == 200)
         {
+            console.log("success!");
             const json_token = jwt.sign({ data: {"username" : user.username}}, jwt_secret, { expiresIn: "2h"});
-            res.setHeader("Set-Cookie", cookie.serialize("jwt", json_token, {httpOnly: true}));
+            res.cookie("login_token", json_token, {httpOnly: true, maxAge: 86_400_000});
             res.status(200).send("Success, logged in");
         }
         else
@@ -31,11 +35,14 @@ router.post("/login/", async (req: Request, res: Response, next: any)=> {
     next();
 });
 
-// POST: /api/register/
+/**
+ * POST: /api/register
+ * @param {IUserJson} user  The User JSON with their username and password
+ */
 router.post("/register", async (req: Request, res: Response, next: any) => {
     const user: IUserJson = req.body;
 
-    await userHandler.register(user).then((statusCode) => {
+    await userHandler.register(user).then((statusCode: number) => {
         if (statusCode == 200)
         {
             res.status(statusCode).send("Registered!");
