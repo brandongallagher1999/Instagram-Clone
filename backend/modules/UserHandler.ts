@@ -55,7 +55,7 @@ class UserHandler
         return statusCode;
         
     }
-        /**
+    /**
      * @param {IUserJson} user  The user JSON coming in from the front-end POST request.
      * 
      * @return {Promise<number>}    An HTTP status code

@@ -2,7 +2,6 @@ import { Router, Response, Request } from "express";
 import { IUserJson } from "../types/user";
 import UserHandler from "../modules/UserHandler";
 import { jwt_secret } from "../config.json";
-import cookie from "cookie";
 import jwt from "jsonwebtoken";
 
 const express: any = require("express");
@@ -21,7 +20,6 @@ router.post("/login/", async (req: Request, res: Response, next: any)=> {
     await userHandler.login(user).then((statusCode: number) => {
         if (statusCode == 200)
         {
-            console.log("success!");
             const json_token = jwt.sign({ data: {"username" : user.username}}, jwt_secret, { expiresIn: "2h"});
             res.cookie("login_token", json_token, {httpOnly: true, maxAge: 86_400_000});
             res.status(200).send("Success, logged in");
@@ -59,4 +57,3 @@ router.post("/register", async (req: Request, res: Response, next: any) => {
 });
 
 export default router;
-

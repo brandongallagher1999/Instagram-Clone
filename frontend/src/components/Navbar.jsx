@@ -10,23 +10,23 @@ function Navbar()
     return (
         <div className="main-navbar">
             <a href="/">
-                <img src={instagramLogo} height="115px" width= "115px"></img>
+                <img src={instagramLogo} height="115px" width= "115px" alt=""></img>
             </a>
 
             <input className="input is-normal" type="text" placeholder="Search" style={{height: "1.5em", width: "12em", marginTop: "0.5vh"}}></input>
 
             <div className="end-navbar">
                 <a href="/">
-                    <img src={homeButton} height="25px" width="25px"></img>
+                    <img src={homeButton} height="25px" width="25px" alt=""></img>
                 </a>
                 
                 
                 <a href="/">
-                    <img src={messengerIcon} height="25px" width="25px"></img>
+                    <img src={messengerIcon} height="25px" width="25px" alt=""></img>
                 </a>
 
                 <a href="/">
-                    <img src={heartIcon} height="25px" width="25px" style={{marginBottom: "-0.30vh"}}></img>
+                    <img src={heartIcon} height="25px" width="25px" alt="" style={{marginBottom: "-0.30vh"}}></img>
                 </a>
             </div>
 
