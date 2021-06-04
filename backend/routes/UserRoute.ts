@@ -1,12 +1,10 @@
-import { Router, Response, Request } from "express";
-import { IUserJson } from "../types/user";
+import { Router, Response } from "express";
+import { IUserJson, TypedReqest } from "../types/user";
 import UserHandler from "../modules/UserHandler";
 import { jwt_secret } from "../config.json";
 import jwt from "jsonwebtoken";
 
-const express: any = require("express");
-
-const router: Router = express.Router();
+const router: Router = Router();
 
 const userHandler: UserHandler = new UserHandler();
 
@@ -14,7 +12,7 @@ const userHandler: UserHandler = new UserHandler();
  * POST: /api/login
  * @param {IUserJson} user  The User JSON with their username and password
  */
-router.post("/login/", async (req: Request, res: Response, next: any)=> {
+router.post("/login/", async (req: TypedReqest<IUserJson>, res: Response, next: any)=> {
 
     const user: IUserJson = req.body;
     await userHandler.login(user).then((statusCode: number) => {
@@ -37,7 +35,7 @@ router.post("/login/", async (req: Request, res: Response, next: any)=> {
  * POST: /api/register
  * @param {IUserJson} user  The User JSON with their username and password
  */
-router.post("/register", async (req: Request, res: Response, next: any) => {
+router.post("/register", async (req: TypedReqest<IUserJson>, res: Response, next: any) => {
     const user: IUserJson = req.body;
 
     await userHandler.register(user).then((statusCode: number) => {

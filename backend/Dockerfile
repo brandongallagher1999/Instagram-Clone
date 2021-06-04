@@ -13,6 +13,9 @@ RUN tsc
 
 WORKDIR /dist/
 
+#Setting environment variable
+ENV PORT=3001
+
 EXPOSE 3001
 
 #Run the program
